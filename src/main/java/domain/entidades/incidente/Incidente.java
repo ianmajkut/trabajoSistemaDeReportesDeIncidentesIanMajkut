@@ -8,12 +8,14 @@ import domain.entidades.tecnico.Tecnico;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.lang.reflect.Array;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -71,7 +73,10 @@ public class Incidente {
     }
 
     public void cerrar(){
+        if(estados.stream().map(EstadoIncidente::getEstaCerrado).anyMatch(val -> val == true)){
+            this.fechaCierre = LocalDateTime.now();
 
+        }
     }
 
 

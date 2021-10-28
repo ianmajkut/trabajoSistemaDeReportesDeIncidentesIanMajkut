@@ -9,5 +9,6 @@ import java.time.LocalDate;
 @Setter
 public class EstadoIncidente {
     private LocalDate fechaHora;
+    private Boolean estaCerrado;
     private PosibleEstadoIncidente posibleEstadoIncidente;
 }
