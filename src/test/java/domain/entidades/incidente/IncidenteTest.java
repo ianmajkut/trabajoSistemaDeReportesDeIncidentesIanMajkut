@@ -3,13 +3,17 @@ package domain.entidades.incidente;
 import domain.entidades.problema.Problema;
 import domain.entidades.tecnico.Especialidad;
 import domain.entidades.tecnico.Tecnico;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.time.LocalDateTime;
 
 public class IncidenteTest {
     private Tecnico tecnico;
     private Incidente incidente;
     private Problema problema;
+    private PosibleEstadoIncidente posibleEstadoIncidente;
 
 
     @Before
@@ -36,7 +40,8 @@ public class IncidenteTest {
 
         this.incidente.setProblema(this.problema);
 
-
+        this.posibleEstadoIncidente = new PosibleEstadoIncidente();
+        posibleEstadoIncidente.setNombre("Confirmado");
     }
 
     @Test (expected = RuntimeException.class)
@@ -55,7 +60,7 @@ public class IncidenteTest {
 
         tecnico.setDisponible(false);
 
-        this.incidente.confirmarse();
+        this.incidente.confirmarse(this.posibleEstadoIncidente, this.tecnico);
 
     }
 
@@ -75,7 +80,9 @@ public class IncidenteTest {
 
         tecnico.setDisponible(true);
 
-        this.incidente.confirmarse();
+        this.incidente.confirmarse(this.posibleEstadoIncidente, this.tecnico);
 
     }
+
+
 }

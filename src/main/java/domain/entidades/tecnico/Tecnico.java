@@ -20,10 +20,12 @@ public class Tecnico {
     private List<Especialidad> especialidades;
     private String numeroCompleto;
     private List<Incidente> incidentesCerrados;
+    private List<Incidente> incidentesPendientes;
 
     public Tecnico(){
         this.especialidades = new ArrayList<>();
         this.incidentesCerrados = new ArrayList<>();
+        this.incidentesPendientes = new ArrayList<>();
     }
 
 
@@ -40,7 +42,7 @@ public class Tecnico {
     }
 
     private Boolean tengoLasEspecialidadesRequeridasParaSolucionar(Problema elProblema) {
-        return this.especialidades.stream()
+        return especialidades.stream()
                 .anyMatch(e -> elProblema.getEspecialidadQueResuelven().contains(e));
     }
 
@@ -55,5 +57,12 @@ public class Tecnico {
         this.especialidades.add(especialidad);
     }
 
+    public void agregarIncidenteCerrado(Incidente incidente){
+        this.incidentesCerrados.add(incidente);
+    }
 
+
+    public void agregarIncidentePendiente(Incidente incidente) {
+        this.incidentesPendientes.add(incidente);
+    }
 }

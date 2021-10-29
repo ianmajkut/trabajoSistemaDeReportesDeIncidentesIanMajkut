@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class EstadoIncidente {
-    private LocalDate fechaHora;
+    private LocalDateTime fechaHora;
     private Boolean estaCerrado;
     private PosibleEstadoIncidente posibleEstadoIncidente;
 }

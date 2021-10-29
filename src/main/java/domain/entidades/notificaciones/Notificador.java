@@ -10,7 +10,7 @@ public class Notificador {
 
     //TODO
     public void enviar(Notificacion unaNotificacion){
-
+        medioDeNotificacion.enviar(unaNotificacion);
     }
 
 

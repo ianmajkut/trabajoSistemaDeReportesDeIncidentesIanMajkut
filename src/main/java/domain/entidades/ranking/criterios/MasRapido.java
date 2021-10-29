@@ -12,6 +12,6 @@ public class MasRapido implements CriterioRankeadorTecnico {
     //TODO
     @Override
     public Tecnico obtenerTecnico(List<Tecnico> tecnicos) {
-        return null;//Collections.min(tecnicos, Comparator.comparing(Incidente::diferenciaEntreFechaDeAltaYFechaFechaDeCierre));
+        return null;//return Collections.min(tecnicos, Comparator.comparing(Incidente::getDuracion));
     }
 }

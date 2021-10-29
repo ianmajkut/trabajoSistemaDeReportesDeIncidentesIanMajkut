@@ -1,5 +1,6 @@
 package domain.entidades.incidente;
 
+import domain.entidades.notificaciones.MedioDeNotificacion;
 import domain.entidades.notificaciones.Notificacion;
 import domain.entidades.notificaciones.Notificador;
 import domain.entidades.problema.Problema;
@@ -28,24 +29,30 @@ public class Incidente {
     private Problema problema;
     private ServicioContratado servicioCliente;
     private Tecnico tecnico;
+    private Duration duracion;
+
 
 
     public Incidente(){
         this.estados = new ArrayList<>();
     }
+
     // TODO
-    public void confirmarse(){
-        if(this.tecnico.estasDisponible() && this.tecnico.resolvesProblema(this.problema)){
+    public void confirmarse(PosibleEstadoIncidente estado, Tecnico tecnico){
+        if(tecnico.estasDisponible() && tecnico.resolvesProblema(this.problema)){
             this.fechaAlta = LocalDateTime.now();
 
             //Notificacion Tecnico
             Notificacion notificacionTecnico = new Notificacion();
-            notificacionTecnico.setEmailDestinatario(this.tecnico.getEmail());
+            notificacionTecnico.setEmailDestinatario(tecnico.getEmail());
             notificacionTecnico.setMensaje(this.descripcion);
-            notificacionTecnico.setNroDestinatario(this.tecnico.getNumeroCompleto());
+            notificacionTecnico.setNroDestinatario(tecnico.getNumeroCompleto());
 
             Notificador notificadorTecnico = new Notificador();
             notificadorTecnico.enviar(notificacionTecnico);
+
+            tecnico.agregarIncidentePendiente(this);
+            tecnico.setDisponible(false);
 
             //Notificacion Cliente
             Notificacion notificacionCliente = new Notificacion();
@@ -57,13 +64,7 @@ public class Incidente {
             notificadorCliente.enviar(notificacionCliente);
 
             //Asignacion de estado
-            EstadoIncidente estadoInicial = new EstadoIncidente();
-            estadoInicial.setFechaHora(LocalDate.now());
-
-            PosibleEstadoIncidente estadoIncidente = new PosibleEstadoIncidente();
-            estadoIncidente.setNombre("El incidente a sido asignado");
-            estadoInicial.setPosibleEstadoIncidente(estadoIncidente);
-            agregarEstado(estadoInicial);
+            agregarEstado(estado);
 
         }else if(!this.tecnico.estasDisponible()){
             throw new RuntimeException("No se puede confirmar porque el tecnico no esta disponible");
@@ -75,8 +76,14 @@ public class Incidente {
     public void cerrar(){
         if(estados.stream().map(EstadoIncidente::getEstaCerrado).anyMatch(val -> val == true)){
             this.fechaCierre = LocalDateTime.now();
-
+            this.tecnico.agregarIncidenteCerrado(this);
+            calcularTiempoIncidente(fechaAlta, fechaCierre);
+            this.tecnico.setDisponible(true);
         }
+    }
+
+    private void calcularTiempoIncidente(LocalDateTime fechaAlta, LocalDateTime fechaCierre) {
+        this.duracion = Duration.between(fechaAlta, fechaCierre);
     }
 
 
@@ -84,20 +91,13 @@ public class Incidente {
         return fechaPosibleResolucion;
     }
 
-    public void agregarEstado(EstadoIncidente estado){
-        this.estados.add(estado);
+    public void agregarEstado(PosibleEstadoIncidente estado){
+        EstadoIncidente estadoNuevo = new EstadoIncidente();
+        estadoNuevo.setEstaCerrado(false);
+        estadoNuevo.setFechaHora(LocalDateTime.now());
+        this.estados.add(estadoNuevo);
     }
 
-//    public Boolean elEstadoDelIncidenteEsResuelto(List<EstadoIncidente> estados){
-//        return this.tengoAlgunEstadoResuelto(estados);
-//    }
 
-//    public Boolean tengoAlgunEstadoResuelto(List<EstadoIncidente> estados){
-//        return this.estados
-//    }
-
-//    public Integer diferenciaEntreFechaDeAltaYFechaFechaDeCierre(LocalDateTime fechaAlta, LocalDateTime fechaCierre){
-//       return (Duration.between(fechaCierre, fechaAlta));
-//    }
 
 }
