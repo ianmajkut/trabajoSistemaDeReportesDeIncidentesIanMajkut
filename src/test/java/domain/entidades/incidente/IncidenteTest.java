@@ -14,6 +14,7 @@ public class IncidenteTest {
     private Incidente incidente;
     private Problema problema;
     private PosibleEstadoIncidente posibleEstadoIncidente;
+    private Especialidad especialidadUno, especialidadDos, especialidadTres ,especialidadCuatro;
 
 
     @Before
@@ -28,35 +29,46 @@ public class IncidenteTest {
         this.incidente.setTecnico(this.tecnico);
 
         this.problema = new Problema();
-        Especialidad especialidadRequeridaUno = new Especialidad();
-        Especialidad especialidadRequeridaDos= new Especialidad();
-        Especialidad especialidadRequeridaTres = new Especialidad();
-        especialidadRequeridaUno.setNombre("Microsoft");
-        especialidadRequeridaDos.setNombre("Mac");
-        especialidadRequeridaTres.setNombre("Linux");
-        this.problema.agregarEspecialidadQueResuelve(especialidadRequeridaUno);
-        this.problema.agregarEspecialidadQueResuelve(especialidadRequeridaDos);
-        this.problema.agregarEspecialidadQueResuelve(especialidadRequeridaTres);
+        this.especialidadUno = new Especialidad();
+        this.especialidadDos= new Especialidad();
+        this.especialidadTres = new Especialidad();
+        this.especialidadCuatro = new Especialidad();
+        this.especialidadUno.setNombre("Microsoft");
+        this.especialidadDos.setNombre("Mac");
+        this.especialidadTres.setNombre("Linux");
+        this.especialidadCuatro.setNombre("Java");
+        this.problema.agregarEspecialidadQueResuelve(this.especialidadUno);
+        this.problema.agregarEspecialidadQueResuelve(this.especialidadDos);
+        this.problema.agregarEspecialidadQueResuelve(this.especialidadTres);
+
+//        Especialidad especialidadRequeridaUno = new Especialidad();
+//        Especialidad especialidadRequeridaDos= new Especialidad();
+//        Especialidad especialidadRequeridaTres = new Especialidad();
+//        especialidadRequeridaUno.setNombre("Microsoft");
+//        especialidadRequeridaDos.setNombre("Mac");
+//        especialidadRequeridaTres.setNombre("Linux");
+//        this.problema.agregarEspecialidadQueResuelve(especialidadRequeridaUno);
+//        this.problema.agregarEspecialidadQueResuelve(especialidadRequeridaDos);
+//        this.problema.agregarEspecialidadQueResuelve(especialidadRequeridaTres);
 
         this.incidente.setProblema(this.problema);
 
         this.posibleEstadoIncidente = new PosibleEstadoIncidente();
-        posibleEstadoIncidente.setNombre("Confirmado");
+        this.posibleEstadoIncidente.setNombre("Confirmado");
     }
 
     @Test (expected = RuntimeException.class)
     public void empleadoNoEstaDisponible(){
-        Especialidad primerEspecialidad = new Especialidad();
-        Especialidad segundaEspecialidad= new Especialidad();
-        Especialidad terceraEspecialidad = new Especialidad();
+//        Especialidad primerEspecialidad = new Especialidad();
+//        Especialidad segundaEspecialidad= new Especialidad();
+//        Especialidad terceraEspecialidad = new Especialidad();
+//
+//        primerEspecialidad.setNombre("Microsoft");
+//        segundaEspecialidad.setNombre("AI");
+//        terceraEspecialidad.setNombre("MySql");
 
-        primerEspecialidad.setNombre("DevOps");
-        segundaEspecialidad.setNombre("AI");
-        terceraEspecialidad.setNombre("MySql");
+        this.tecnico.agregarEspecialidad(this.especialidadUno);
 
-        this.tecnico.agregarEspecialidad(primerEspecialidad);
-        this.tecnico.agregarEspecialidad(segundaEspecialidad);
-        this.tecnico.agregarEspecialidad(terceraEspecialidad);
 
         tecnico.setDisponible(false);
 
@@ -66,17 +78,16 @@ public class IncidenteTest {
 
     @Test (expected = RuntimeException.class)
     public void empleadoNoTieneLaEspecialidadRequerida(){
-        Especialidad primerEspecialidad = new Especialidad();
-        Especialidad segundaEspecialidad= new Especialidad();
-        Especialidad terceraEspecialidad = new Especialidad();
+//        Especialidad primerEspecialidad = new Especialidad();
+//        Especialidad segundaEspecialidad= new Especialidad();
+//        Especialidad terceraEspecialidad = new Especialidad();
+//
+//        primerEspecialidad.setNombre("DevOps");
+//        segundaEspecialidad.setNombre("AI");
+//        terceraEspecialidad.setNombre("MySql");
 
-        primerEspecialidad.setNombre("DevOps");
-        segundaEspecialidad.setNombre("AI");
-        terceraEspecialidad.setNombre("MySql");
+        this.tecnico.agregarEspecialidad(this.especialidadCuatro);
 
-        this.tecnico.agregarEspecialidad(primerEspecialidad);
-        this.tecnico.agregarEspecialidad(segundaEspecialidad);
-        this.tecnico.agregarEspecialidad(terceraEspecialidad);
 
         tecnico.setDisponible(true);
 
